@@ -62,12 +62,12 @@
 
 <xsd:complexType name="serverconfigType">
  <xsd:all>
-  <xsd:element name="ipconfig" type="ipconfigType"\>
-  <xsd:element name="timezone" type="xsd:string"\>
-  <xsd:element name="install"  type="installType"\>
-  <xsd:element name="aptitude" type="xsd:string"\>
-  <xsd:element name="sysvinit" type="sysvinitType"\>
-  <xsd:element name="command"  type="xsd:string"\>
-  <xsd:element name="template" type="templateType"\>
+  <xsd:element name="ipconfig" type="ipconfigType"/>
+  <xsd:element name="timezone" type="xsd:string"/>
+  <xsd:element name="install"  type="installType"/>
+  <xsd:element name="aptitude" type="xsd:string"/>
+  <xsd:element name="sysvinit" type="sysvinitType"/>
+  <xsd:element name="command"  type="xsd:string"/>
+  <xsd:element name="template" type="templateType"/>
  </xsd:all>
 </xsd:complexType>
