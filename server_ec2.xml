@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<!-- XML-File for role Server_PS_ec2 -->
+
+<serverconfig>
+ <timezone>Europe/Berlin</timezone>
+ <install>
+        <name>Connectionserver_Install_Binary</name>
+        <version>8.3.4.2563</version>
+        <file>pcvisit_install.bin</file>
+        <os>linux</os>
+        <branch>release</branch>
+        <expat_steps>
+                <step>
+                        <question>destination</question>
+                        <answer>/usr/local/pcvisit</answer>
+                </step>
+                <step>
+                        <question>address</question>
+                        <answer>$this->ip</answer>
+                </step>
+        </expat_steps>
+ </install>
+ <sysvinit>
+	<sourcefile>/usr/local/pcvisit/pcvisit_init</sourcefile>
+	<sysvname>pcvisit</sysvname>
+	<position>99</position>
+ </sysvinit>
+ <aptitude>libexpect-perl_1</aptitude>
+ <aptitude>acm</aptitude>
+ <command>/usr/local/pcvisit/pcvisit_init start</command>
+</serverconfig>
+
