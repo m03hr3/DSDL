@@ -5,10 +5,12 @@
  <timezone>Europe/Berlin</timezone>
  <install>
         <name>Connectionserver_Install_Binary</name>
-        <version>8.3.4.2563</version>
+	<branch>trunk</branch>
+        <revision>8.3.4.2563</revision>
+	<os>linux</os>
+	<config>release</config>
+	<customization>standard</customization>
         <file>pcvisit_install.bin</file>
-        <os>linux</os>
-        <branch>release</branch>
         <expat_steps>
                 <step>
                         <question>destination</question>

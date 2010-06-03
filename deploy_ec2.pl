@@ -14,7 +14,7 @@ use Expect;
 
 
 ######################################
-my $role	 = "server";
+my $role	 = "server_ec2";
 ######################################
 
 
@@ -230,16 +230,18 @@ sub setupNetworking{
 
 sub pcvInstall{
 
-	my $leaf        = "";
-	my $step        = "";
-        my $Subnode     = "";
-	my $artefact    = "";
-	my $version     = "";
-	my $filename    = "";
-	my $osname      = "";
-	my $branch      = "";	
-        my @Subnodes    = "";
-	my @expat_steps = "";
+	my $leaf          = "";
+	my $step          = "";
+        my $Subnode       = "";
+	my $artefact      = "";
+	my $revision      = "";
+	my $config	  = "";
+	my $cust	  = "";
+	my $filename      = "";
+	my $osname        = "";
+	my $branch        = "";	
+        my @Subnodes      = "";
+	my @expat_steps   = "";
 
 	@Subnodes  = $_[0]->getChildNodes();
 
@@ -249,15 +251,17 @@ sub pcvInstall{
 
                         switch ($Subnode -> nodeName()){
                                 case "name" { $artefact = $Subnode->textContent();}
-                                case "version" { $version = $Subnode->textContent();}
-                                case "file" { $filename = $Subnode->textContent();}
-				case "os" { $osname = $Subnode->textContent();}
 				case "branch" { $branch = $Subnode->textContent();}
+                                case "revision" { $revision = $Subnode->textContent();}
+				case "os" { $osname = $Subnode->textContent();}
+				case "config"  { $config = $Subnode->textContent();}
+				case "customization" { $cust = $Subnode->textContent();}
+                                case "file" { $filename = $Subnode->textContent();}
                         }
                 }
         }
 
-	getFileFromRepo($artefact."/".$version."/".$osname."/".$branch."/".$filename,$filename);
+	getFileFromRepo($artefact."/".$branch."/".$revision."/".$osname."/".$config."/".$cust."/".$filename,$filename);
 
         chmod 0750,$working_dir.$filename;
 
@@ -308,7 +312,7 @@ sub pcvInstall{
 	}else{
 		cleanUpAndExit("ERROR: only one Tag <expat_steps> is allowed \n");
 	}
-	print "INFO: artefact '$artefact' revision '$version' installed successfully ... \n";
+	print "INFO: artefact '$artefact' revision '$revision' installed successfully ... \n";
 }
 
 ################################################################################################
