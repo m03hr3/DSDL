@@ -430,7 +430,7 @@ sub cleanUpAndExit{
 
 	my $logString = $_[0];
 
-	print $_[0];
+	print $logString;
 
 	my $message = MIME::Lite->new(
         	To => 'alexander.mueller@pcvisit.de',
