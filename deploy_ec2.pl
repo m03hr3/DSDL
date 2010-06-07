@@ -66,6 +66,10 @@ sub init{
 
 	print "INFO: initial IP as we started is: ",$this->ip," ... \n";
 
+	# changing DEBIAN_FRONTEND so aptitude will be completely silent. Dangerous!!!
+	# TODO: find a better way 
+	system("export DEBIAN_FRONTEND=noninteractive");
+
 	# count installed packages
 	$numPkgBeforeInit = qx(dpkg -l | wc -l);
 		
@@ -323,7 +327,7 @@ sub pcvInstall{
 
 sub getIp {
 
-	my $ip = "0.0.0.0.0"; # Defualt-IP
+	my $ip = "0.0.0.0"; # Default-IP
 	my $interface = shift || "lo"; # Default-Interface
 
 	return $ip if $>; # nur r00t geht weiter
