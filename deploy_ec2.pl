@@ -3,6 +3,7 @@
 #use strict;
 use Time::HiRes qw(gettimeofday tv_interval);
 use Class::Struct;
+use MIME::Lite;
 use XML::LibXML;
 use XML::XPath;
 use XML::LibXML::Common;
@@ -31,7 +32,8 @@ my $FTP_Dir_Roles= "Roles/";
 my $FTP_Dir_Tmpl = "Templates/";
 my $locatime_file= "/etc/localtime";
 my $logfile      = "deploy.log";
-my @DLfiles = $xml_file;
+my @DLfiles      = $xml_file;
+my @Logfiles     = ();
 
 struct InstanceData => {
 	ip => '$',
@@ -40,16 +42,12 @@ struct InstanceData => {
 	netmask=>'$',
 	gateway=>'$'
 };
-
-init();
-parseAndExecuteXML();
-
+	
 sub init{
 
 	my $numPkgBeforeInit = 0;
 	my $numPkgAfterInit = 0;
 	my $count = 0;
-
 
 	$|=1;
 
@@ -64,6 +62,7 @@ sub init{
 	open (STDOUT, ">>$logfile");
 
 	chmod 0777,$logfile;
+	push(@Logfiles,$logfile);
 
 	print "INFO: initial IP as we started is: ",$this->ip," ... \n";
 
@@ -276,8 +275,9 @@ sub pcvInstall{
 	        # prevent the program's output from being shown on our STDOUT
 		$command->log_stdout(0);
 
-		# log session to logfile
+		# log session to logfile and add $logile to list of logfiles
 		$command->log_file($artefact.".log");
+		push(@Logfiles,$artefact.".log");
 
 		my $leaf  = $expat_steps[0];
 		my @steps = $leaf->getChildNodes();
@@ -286,7 +286,7 @@ sub pcvInstall{
 		 	if($step->nodeType==ELEMENT_NODE){
 
 				#get question and send it to install 
-        			unless ($command->expect(5, $step->getElementsByTagName("question")->item(0)->textContent())) {
+        			unless ($command->expect(20, $step->getElementsByTagName("question")->item(0)->textContent())) {
 			                # timed out
         			}
 				
@@ -417,8 +417,8 @@ sub sysvInit(){
 			
 			switch ($sysv_subnode->nodeName()){
 				case "sourcefile" { $sysv_sourcefile = $sysv_subnode->textContent();}
-				case "sysvname"   { $sysv_filename = $sysv_subnode->textContent();}
-				case "position"   { $sysv_position = $sysv_subnode->textContent();}
+				case "sysvname"   { $sysv_filename   = $sysv_subnode->textContent();}
+				case "position"   { $sysv_position   = $sysv_subnode->textContent();}
 			}
 		}
 	}
@@ -426,12 +426,33 @@ sub sysvInit(){
 	system("cp $sysv_sourcefile $init_dir$sysv_filename");
 	system("update-rc.d $sysv_filename defaults $sysv_position");
 }
-sub cleanUpAndExit(){
-	
+sub cleanUpAndExit{
+
 	my $logString = $_[0];
 
 	print $_[0];
 
-	die $_[0];
+	my $message = MIME::Lite->new(
+        	To => 'alexander.mueller@pcvisit.de',
+        	Subject => "Deployment run for ip ".$this->ip."",
+        	Data => 'logfiles attached',
+		Type    =>'multipart/mixed'
+	);
 
+	foreach $line (@Logfiles) {
+		$part = MIME::Lite->new(
+			Type => 'text/plain',
+			Path => $working_dir.$line,
+			Disposition => 'attachment'
+		)or die "Error adding the text message part: $!\n";
+		$message->attach($part);
+	}
+	$message->send;
+
+	exit 0;
 }
+
+init();
+parseAndExecuteXML();
+cleanUpAndExit("CLEANEXIT: run successfully finished ...\n");
+
