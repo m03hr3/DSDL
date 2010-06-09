@@ -22,7 +22,7 @@ my $role	 = "server_ec2";
 
 my $t0 = [gettimeofday];
 my $xml_file        = $role.".xml";
-my $repo_url        = "http://update.pcvisit.de/autoupdate/ec2/private/";
+#my $repo_url        = "http://update.pcvisit.de/autoupdate/ec2/private/";
 #my $repo_url       = "ftp://192.168.0.199/private/";
 my $updateinfo_url  = "http://update.pcvisit.de/";
 my $updateinfo_file = "updateinfo.xml";
@@ -30,8 +30,8 @@ my $time_server     = "ptbtime1.ptb.de";
 my $working_dir     = "/tmp/";
 my $timezone_dir    = "/usr/share/zoneinfo/";
 my $init_dir        = "/etc/init.d/";
-my $FTP_Dir_Roles   = "Roles/";
-my $FTP_Dir_Tmpl    = "Templates/";
+my $FTP_Dir_Roles   = "roles/";
+my $FTP_Dir_Tmpl    = "templates/";
 my $locatime_file   = "/etc/localtime";
 my $logfile         = "deploy.log";
 my @DLfiles         = $xml_file;
@@ -89,7 +89,25 @@ sub init{
         	if ( !is_success($status)) { cleanUpAndExit("ERROR: error downloading file '$updateinfo_url.$updateinfo_file' : Error Code: $status ... \n");
         }
 	print "INFO: fetched '$updateinfo_url$updateinfo_file' ... \n";
-	
+
+	# new parser for updateinfo.xml
+	my $updateParser =  new XML::LibXML;
+	if (! -e $updateinfo_file){
+                cleanUpAndExit("ERROR: Could not find XML Config $updateinfo_file ... \n");
+        }
+        my $updateStruct = $updateParser -> parse_file($updateinfo_file);
+	my $UpdateRoot	 = $updateStruct -> getDocumentElement();
+	my @UpdateNodes  = $UpdateRoot   ->getElementsByTagName('repository');
+
+	foreach $repo (@UpdateNodes){
+		if($repo->nodeType==ELEMENT_NODE){
+			if($repo->getAttribute('name') eq "testrepo"){
+				print "INFO: repository URL is ".$repo->getAttribute('url')." ... \n";
+				$repo_url = $repo->getAttribute('url')."private/";
+			}
+		}
+	} 
+
 	# get the XML File for the role we are acting as
 	foreach $file (@DLfiles){
 		getFileFromRepo($FTP_Dir_Roles.$file,$file);
