@@ -68,7 +68,7 @@ sub init{
 
 	# changing DEBIAN_FRONTEND so aptitude will be completely silent. Dangerous!!!
 	# TODO: find a better way 
-	system("export DEBIAN_FRONTEND=noninteractive");
+	$ENV{DEBIAN_FRONTEND}='noninteractive';
 
 	# count installed packages
 	$numPkgBeforeInit = qx(dpkg -l | wc -l);
