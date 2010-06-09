@@ -22,8 +22,8 @@ my $role	 = "server_ec2";
 
 my $t0 = [gettimeofday];
 my $xml_file     = $role.".xml";
-#my $repo_url     = "http://update.pcvisit.de/autoupdate/ec2/private/";
-my $repo_url     = "ftp://192.168.0.199/private/";
+my $repo_url     = "http://update.pcvisit.de/autoupdate/ec2/private/";
+#my $repo_url     = "ftp://192.168.0.199/private/";
 my $time_server  = "ptbtime1.ptb.de";
 my $working_dir  = "/tmp/";
 my $timezone_dir = "/usr/share/zoneinfo/";
