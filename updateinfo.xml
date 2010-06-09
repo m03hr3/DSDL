@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updateinfo>
+	<artifacts>
+		<artifact name="caloa_app">
+			<os name="win32">
+				<versions>
+					<version name="stable" major="8" minor="3" release="4" build="4444">
+						<dependencies/>
+					</version>
+					<version name="head">
+						<dependencies/>
+					</version>
+				</versions>
+			</os>
+		</artifact>
+	</artifacts>
+	<repositories>
+		<repository name="testrepo" url="http://80.237.225.181/" />
+	</repositories>
+</updateinfo>

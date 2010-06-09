@@ -21,26 +21,28 @@ my $role	 = "server_ec2";
 
 
 my $t0 = [gettimeofday];
-my $xml_file     = $role.".xml";
-my $repo_url     = "http://update.pcvisit.de/autoupdate/ec2/private/";
-#my $repo_url     = "ftp://192.168.0.199/private/";
-my $time_server  = "ptbtime1.ptb.de";
-my $working_dir  = "/tmp/";
-my $timezone_dir = "/usr/share/zoneinfo/";
-my $init_dir     = "/etc/init.d/";
-my $FTP_Dir_Roles= "Roles/";
-my $FTP_Dir_Tmpl = "Templates/";
-my $locatime_file= "/etc/localtime";
-my $logfile      = "deploy.log";
-my @DLfiles      = $xml_file;
-my @Logfiles     = ();
+my $xml_file        = $role.".xml";
+my $repo_url        = "http://update.pcvisit.de/autoupdate/ec2/private/";
+#my $repo_url       = "ftp://192.168.0.199/private/";
+my $updateinfo_url  = "http://update.pcvisit.de/";
+my $updateinfo_file = "updateinfo.xml";
+my $time_server     = "ptbtime1.ptb.de";
+my $working_dir     = "/tmp/";
+my $timezone_dir    = "/usr/share/zoneinfo/";
+my $init_dir        = "/etc/init.d/";
+my $FTP_Dir_Roles   = "Roles/";
+my $FTP_Dir_Tmpl    = "Templates/";
+my $locatime_file   = "/etc/localtime";
+my $logfile         = "deploy.log";
+my @DLfiles         = $xml_file;
+my @Logfiles        = ();
 
 struct InstanceData => {
-	ip => '$',
-	nameserver=> '$',
-	network=>'$',
-	netmask=>'$',
-	gateway=>'$'
+	ip 		=> '$',
+	nameserver	=> '$',
+	network		=> '$',
+	netmask		=> '$',
+	gateway		=> '$'
 };
 	
 sub init{
@@ -67,7 +69,7 @@ sub init{
 	print "INFO: initial IP as we started is: ",$this->ip," ... \n";
 
 	# changing DEBIAN_FRONTEND so aptitude will be completely silent. Dangerous!!!
-	# TODO: find a better way 
+	# TODO: find a better way to run aptitude total silent
 	$ENV{DEBIAN_FRONTEND}='noninteractive';
 
 	# count installed packages
@@ -82,6 +84,12 @@ sub init{
 
 	print "INFO: system update run successfull! $count system packages were updated... \n";
 
+	#get updateinfo.xml
+        $status = getstore($updateinfo_url.$updateinfo_file, $updateinfo_file,);
+        	if ( !is_success($status)) { cleanUpAndExit("ERROR: error downloading file '$updateinfo_url.$updateinfo_file' : Error Code: $status ... \n");
+        }
+	print "INFO: fetched '$updateinfo_url$updateinfo_file' ... \n";
+	
 	# get the XML File for the role we are acting as
 	foreach $file (@DLfiles){
 		getFileFromRepo($FTP_Dir_Roles.$file,$file);
