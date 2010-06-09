@@ -10,6 +10,7 @@ use XML::LibXML::Common;
 use XML::NamespaceSupport;
 use Template;
 use LWP::Simple;
+use LWP::UserAgent;
 use Switch;
 use Expect;
 
@@ -34,8 +35,11 @@ my $FTP_Dir_Roles   = "roles/";
 my $FTP_Dir_Tmpl    = "templates/";
 my $locatime_file   = "/etc/localtime";
 my $logfile         = "deploy.log";
+my $http_user	    = "pcvisit";
+my $http_pass       = "visit-27";
 my @DLfiles         = $xml_file;
 my @Logfiles        = ();
+my $browser = LWP::UserAgent->new;
 
 struct InstanceData => {
 	ip 		=> '$',
@@ -44,6 +48,8 @@ struct InstanceData => {
 	netmask		=> '$',
 	gateway		=> '$'
 };
+
+
 	
 sub init{
 
@@ -53,6 +59,8 @@ sub init{
 
 	$|=1;
 
+	$browser->agent('ReportsBot/1.01');
+	
 	# this holds network config data for this instance
 	$this = InstanceData->new(ip => getIp("eth0"), nameserver => "", network=>"",netmask=>"",gateway=>"");
 
@@ -107,6 +115,12 @@ sub init{
 			}
 		}
 	} 
+	
+	$browser->credentials(
+  		'80.237.225.181:80',
+  		'pcvisit',
+  		$http_user => $http_pass
+	);
 
 	# get the XML File for the role we are acting as
 	foreach $file (@DLfiles){
@@ -290,7 +304,7 @@ sub pcvInstall{
                 }
         }
 
-	getFileFromRepo($artefact."/".$branch."/".$revision."/".$osname."/".$config."/".$cust."/".$filename,$filename);
+	getFileFromRepo("private/".$artefact."/".$branch."/".$revision."/".$osname."/".$config."/".$cust."/".$filename,$filename);
 
         chmod 0750,$working_dir.$filename;
 
@@ -414,8 +428,15 @@ sub getFileFromRepo(){
 
 	#print "trying to get file: ".$repo_url.@_[0]." \n ...";
 	
-	$status = getstore($repo_url.$_[0], $_[1],);
-	if ( !is_success($status)) { cleanUpAndExit("ERROR: error downloading file '$_[0]' : Error Code: $status ... \n");
+	#$status = getstore($repo_url.$_[0], $_[1],);
+	#if ( !is_success($status)) { cleanUpAndExit("ERROR: error downloading file '$_[0]' : Error Code: $status ... \n");
+	#}
+
+	$response = $browser->mirror($repo_url.$_[0],$_[1]);
+
+	if( $response->is_error( ) ){
+ 		cleanUpAndExit("ERROR: error downloading file '$_[0]' : Error Code: $status ... \n"); 
+    		$response->status_line;
 	}
 }
 
