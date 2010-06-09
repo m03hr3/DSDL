@@ -63,7 +63,7 @@ sub init{
 	close FILE;
 	open (STDOUT, ">>$logfile");
 
-	chmod 0777,$logfile;
+	chmod 0644,$logfile;
 	push(@Logfiles,$logfile);
 
 	print "INFO: initial IP as we started is: ",$this->ip," ... \n";
