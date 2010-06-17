@@ -76,6 +76,7 @@ sub init{
 	ReadMode 2;
 	$http_pass = ReadLine(0);
 	chomp($http_pass); 
+	ReadMode 0; # Reset tty mode
 
 	print "\nPasswort wird überprüft ...";	
 	# open the logfile
