@@ -11,12 +11,12 @@
  </ipconfig>
  <timezone>Europe/Berlin</timezone>
  <install>
-        <name>Connectionserver_Install_Binary</name>
-        <branch>trunk</branch>
-        <revision>8.3.4.2563</revision>
+        <name>connectionserver</name>
+        <branch>STABLE</branch>
+        <revision>910</revision>
         <os>linux</os>
         <config>release</config>
-        <customization>standard</customization>
+        <customization>gw12_pcvisit_de</customization>
         <file>pcvisit_install.bin</file>
 	<expat_steps>
   	 <step>

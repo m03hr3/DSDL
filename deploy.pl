@@ -14,15 +14,8 @@ use LWP::UserAgent;
 use Switch;
 use Expect;
 
-
-######################################
-my $role	 = "server_ec2";
-######################################
-
-
-
 my $t0 = [gettimeofday];
-my $xml_file        = $role.".xml";
+my $xml_file        = "";
 #my $repo_url        = "http://update.pcvisit.de/autoupdate/ec2/private/";
 #my $repo_url       = "ftp://192.168.0.199/private/";
 my $updateinfo_url  = "http://update.pcvisit.de/";
@@ -37,7 +30,7 @@ my $locatime_file   = "/etc/localtime";
 my $logfile         = "deploy.log";
 my $http_user	    = "pcvisit";
 my $http_pass       = "visit-27";
-my @DLfiles         = $xml_file;
+my @DLfiles         = "";
 my @Logfiles        = ();
 my $browser = LWP::UserAgent->new;
 
@@ -58,12 +51,20 @@ sub init{
 	my $count = 0;
 
 	$|=1;
+	
+	 # this holds network config data for this instance
+        $this = InstanceData->new(ip => getIp("eth0"), nameserver => "", network=>"",netmask=>"",gateway=>"");
 
 	$browser->agent('ReportsBot/1.01');
-	
-	# this holds network config data for this instance
-	$this = InstanceData->new(ip => getIp("eth0"), nameserver => "", network=>"",netmask=>"",gateway=>"");
 
+	if ($#ARGV != 0){
+		cleanUpAndExit("ABORT: No role specified. Usage is: deploy.pl <role> ...\n");
+	}
+
+	$role     = $ARGV[0];
+	$xml_file = $role.".xml";
+	@DLfiles  = $xml_file;
+	
 	chdir $working_dir or die "ERROR: could not change to $working_dir ... \n";
 
 	# open the logfile
@@ -111,7 +112,7 @@ sub init{
 		if($repo->nodeType==ELEMENT_NODE){
 			if($repo->getAttribute('name') eq "testrepo"){
 				print "INFO: repository URL is ".$repo->getAttribute('url')." ... \n";
-				$repo_url = $repo->getAttribute('url')."private/";
+				$repo_url = $repo->getAttribute('url');
 			}
 		}
 	} 
@@ -330,7 +331,7 @@ sub pcvInstall{
 		 	if($step->nodeType==ELEMENT_NODE){
 
 				#get question and send it to install 
-        			unless ($command->expect(20, $step->getElementsByTagName("question")->item(0)->textContent())) {
+        			unless ($command->expect(30, $step->getElementsByTagName("question")->item(0)->textContent())) {
 			                # timed out
         			}
 				
@@ -426,7 +427,7 @@ sub aptInstall{
 
 sub getFileFromRepo(){
 
-	#print "trying to get file: ".$repo_url.@_[0]." \n ...";
+	print "trying to get file: ".$repo_url.@_[0]." \n ...";
 	
 	#$status = getstore($repo_url.$_[0], $_[1],);
 	#if ( !is_success($status)) { cleanUpAndExit("ERROR: error downloading file '$_[0]' : Error Code: $status ... \n");
