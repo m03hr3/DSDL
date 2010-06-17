@@ -16,6 +16,7 @@ use Expect;
 
 my $t0 = [gettimeofday];
 my $xml_file        = "";
+my $monitorEmail    = 'alexander.mueller@pcvisit.de';
 #my $repo_url        = "http://update.pcvisit.de/autoupdate/ec2/private/";
 #my $repo_url       = "ftp://192.168.0.199/private/";
 my $updateinfo_url  = "http://update.pcvisit.de/";
@@ -41,8 +42,6 @@ struct InstanceData => {
 	netmask		=> '$',
 	gateway		=> '$'
 };
-
-
 	
 sub init{
 
@@ -485,9 +484,9 @@ sub cleanUpAndExit{
 	print $logString;
 
 	my $message = MIME::Lite->new(
-        	To => 'alexander.mueller@pcvisit.de',
-        	Subject => "Deployment run for ip ".$this->ip."",
-        	Data => 'logfiles attached',
+        	To      => $monitorEmail,
+        	Subject => "Deployment run for role \"$$role\" on ip ".$this->ip."",
+        	Data    => 'logfiles attached',
 		Type    =>'multipart/mixed'
 	);
 
