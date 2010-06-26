@@ -4,7 +4,7 @@
 		<artifact name="caloa_app">
 			<os name="win32">
 				<versions>
-					<version name="stable" major="8" minor="3" release="4" build="4444">
+					<version name="stable" fileversion="8.3.4.4444">
 						<dependencies/>
 					</version>
 					<version name="head">
@@ -14,7 +14,96 @@
 			</os>
 		</artifact>
 	</artifacts>
+	<applications>
+		<application name="pcvisit.EasySupport.9" os="win32" flavor=" release" tag="stable " >
+							<!--Attribute:
+								url | src repository - entweder eine URL oder ein Path + Repository muss hier stehen 
+								description	     - optional Bezeichnung oder Anmerkung 
+								artifact             - ist vordefiniert. Es gibt: flashplayer caloa_app artifacts application setup
+								minversion           - Bezeichniet die mindeste vorhandene Version
+								maxversion           - Bezeichniet die maxiomal nutzbare Version
+							  --> 
+							<dependency artifact="caloa_app" dst="caloa_app.exe" >
+								<minversion description="stable" fileversion="9.0.115.0" src="win32/" />
+								<maxversion description="stable" fileversion="9.0.115.0" src="win32/" />
+							</dependency>
+							<dependency artifact="flashplayer" dst="NPSWF32.dll" >
+ 								<!--Attribute: die Versionen sind hier so hoch eingestellt, damit der Test immer versucht den Player zu laden: --> 
+								<minversion description="" fileversion="11.0.115.0" url="file://../input4test/flashversions/win32np_10_0_42_34.dll" />
+								<maxversion description="" fileversion="11.0.115.0" url="file://../input4test/flashversions/win32np_10_0_42_34.dll" /> 
+							</dependency>
+							<dependency artifact="artifacts" dst="EasySupport9.zip" >
+								<minversion description="stable" fileversion="1.0.0.0" src="update/update.zip" repository="testrepo" />
+								<maxversion description="stable" fileversion="1.5.115.0" src="update.zip" repository="testrepo" />
+							</dependency>
+							<dependency artifact="setup" dst="EasySupport9Install.exe" >
+								<minversion description="stable" fileversion="9.0.115.0" src="win32/" />
+								<maxversion description="stable" fileversion="9.0.115.0" src="win32/" />
+							</dependency>
+							<dependency artifact="application" dst="EasySupport9.exe" >
+								<minversion description="stable" fileversion="9.0.115.0" src="win32/" />
+								<maxversion description="stable" fileversion="9.0.115.0" src="win32/" />
+							</dependency>
+		</application>
+		<application name="pcvisit.EasySupport.9" os="win32" flavor="release" tag="stable.it_support_heinze" >
+							<dependency artifact="artifacts" dst="EasySupport9.zip" >
+								<minversion description="stable" fileversion="1.0.0.0" src="update.it_support_heinze.zip" repository="testrepo" />
+								<maxversion description="stable" fileversion="1.5.115.0" src="update.it_support_heinze.zip" repository="testrepo" />
+							</dependency>
+		</application>
+		<application name="pcvisit.EasySupport.10" os="win32" flavor="release" tag="stable" >
+							<!--Attribute:
+								url | src repository - entweder eine URL oder ein Path + Repository muss hier stehen 
+								description	     - optional Bezeichnung oder Anmerkung 
+								artifact             - ist vordefiniert. Es gibt: flashplayer caloa_app artifacts application setup
+								minversion           - Bezeichniet die mindeste vorhandene Version
+								maxversion           - Bezeichniet die maxiomal nutzbare Version
+							  --> 
+							<dependency artifact="caloa_app" dst="caloa_app.exe" >
+								<minversion description="stable" fileversion="9.0.115.0" src="win32/" />
+								<maxversion description="stable" fileversion="9.0.115.0" src="win32/" />
+							</dependency>
+							<dependency artifact="flashplayer" dst="NPSWF32.dll" >
+								<minversion description="" fileversion="9.0.115.0" src="win32/plugins/flash_10.34.56.dat" />
+								<maxversion description="" fileversion="10.34.50.0" url="http://www.adobe.downloads/NPSWF32.dll" /> 
+							</dependency>
+							<dependency artifact="artifacts" dst="EasySupport9.zip" >
+								<minversion description="stable" fileversion="1.0.0.0" src="win32/" />
+								<maxversion description="stable" fileversion="1.5.115.0" src="win32/" />
+							</dependency>
+							<dependency artifact="setup" dst="EasySupport9Install.exe" >
+								<minversion description="stable" fileversion="9.0.115.0" src="win32/" />
+								<maxversion description="stable" fileversion="9.0.115.0" src="win32/" />
+							</dependency>
+							<dependency artifact="application" dst="EasySupport9.exe" >
+								<minversion description="stable" fileversion="9.0.115.0" src="win32/" />
+								<maxversion description="stable" fileversion="9.0.115.0" src="win32/" />
+							</dependency>
+		</application>
+		<application name="pcvisit.cfe.1" os="win32" flavor="release" tag="head" >
+							<!--Attribute:
+								url | src repository - entweder eine URL oder ein Path + Repository muss hier stehen 
+								description	     - optional Bezeichnung oder Anmerkung 
+								artifact             - ist vordefiniert. Es gibt: flashplayer caloa_app artifacts application setup
+								minversion           - Bezeichniet die mindeste vorhandene Version
+								maxversion           - Bezeichniet die maxiomal nutzbare Version
+							  --> 
+							<dependency artifact="caloa_app" dst="caloa_app.exe" >
+								<minversion description="stable" fileversion="9.0.1.4900" src="caloa_app/trunk/HEAD/win32/release/standard/caloa_app.exe" repository="onlinerepo"/>
+								<maxversion description="stable" fileversion="9.0.2.5000" src="caloa_app/trunk/HEAD/win32/release/standard/caloa_app.exe" repository="onlinerepo"/>
+							</dependency>
+							<dependency artifact="flashplayer" dst="NPSWF32.dll" >
+								<minversion description="" fileversion="9.0.115.0" src="win32/plugins/flash_10.34.56.dat" />
+								<maxversion description="" fileversion="10.34.50.0" url="http://www.adobe.downloads/NPSWF32.dll" /> 
+							</dependency>
+							<dependency artifact="artifacts" dst="cfe.zip" >
+								<minversion description="stable" fileversion="1.0.0.0" src="cfe1zip/trunk/HEAD/win32/release/standard/cfe.zip" repository="onlinerepo" />
+								<maxversion description="stable" fileversion="1.1.1.0" src="cfe1zip/trunk/HEAD/win32/release/standard/cfe.zip" repository="onlinerepo" />
+							</dependency>
+		</application>		
+	</applications>
 	<repositories>
-		<repository name="testrepo" url="http://80.237.225.181/" />
+		<repository name="testrepo" url="file://../input4test/Update" />
+		<repository name="onlinerepo" url="http://80.237.225.181/public/" />
 	</repositories>
 </updateinfo>
