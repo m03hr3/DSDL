@@ -109,7 +109,7 @@ sub init{
 
 	foreach $repo (@UpdateNodes){
 		if($repo->nodeType==ELEMENT_NODE){
-			if($repo->getAttribute('name') eq "testrepo"){
+			if($repo->getAttribute('name') eq "serverrepo"){
 				print "INFO: repository URL is ".$repo->getAttribute('url')." ... \n";
 				$repo_url = $repo->getAttribute('url');
 			}

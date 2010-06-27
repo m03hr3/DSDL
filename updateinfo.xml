@@ -105,5 +105,6 @@
 	<repositories>
 		<repository name="testrepo" url="file://../input4test/Update" />
 		<repository name="onlinerepo" url="http://80.237.225.181/public/" />
+		<repository name="serverrepo" url="http://repository.pcvisit.de/private/" />
 	</repositories>
 </updateinfo>
