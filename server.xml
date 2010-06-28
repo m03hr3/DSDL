@@ -34,14 +34,6 @@
         <sysvname>pcvisit</sysvname>
         <position>99</position>
  </sysvinit>
- <template type="interfaces">
- 	<name>interfaces</name>
- 	<dest>/etc/network/</dest>
- </template>
- <template type="resolv.conf">
-        <name>resolv.conf</name>
-        <dest>/etc/</dest>
- </template>
  <aptitude>libexpect-perl_1</aptitude>
  <aptitude>acm</aptitude>
  <command>/usr/local/pcvisit/pcvisit_init start</command>

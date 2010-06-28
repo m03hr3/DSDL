@@ -32,6 +32,10 @@ my $locatime_file   = "/etc/localtime";
 my $logfile         = "deploy.log";
 my $http_user	    = "pcvisit";
 my $http_pass       = "visit-27";
+my $name_interfaces = "interfaces";
+my $path_interfaces = "/etc/network/";
+my $name_resolv     = "resolv.conf";
+my $path_resolv     = "/etc/";
 my $message	    = "";
 my $letter	    = "";
 my @DLfiles         = "";
@@ -122,7 +126,7 @@ sub init{
 
 	foreach $repo (@UpdateNodes){
 		if($repo->nodeType==ELEMENT_NODE){
-			if($repo->getAttribute('name') eq "testrepo"){
+			if($repo->getAttribute('name') eq "serverrepo"){
 				print "INFO: repository URL is ".$repo->getAttribute('url')." ... \n";
 				$repo_url = $repo->getAttribute('url');
 			}
@@ -131,7 +135,7 @@ sub init{
 	
 	$browser->credentials(
   		'80.237.225.181:80',
-  		'pcvisit',
+  		'Versuch',
   		$http_user => $http_pass
 	);
 
@@ -200,11 +204,6 @@ sub setupNetworking{
 	my $tt = Template->new;
         my $Subnode         = "";
 	my @Subnodes        = "";
-	my $name_interfaces = "";
-	my $name_resolv     = "";
-	my $path_interfaces = "";
-	my $path_resolv     = "";
-	my @leafes          = "";
 
 	@Subnodes  = $_[0]->getChildNodes();
 
@@ -227,36 +226,6 @@ sub setupNetworking{
                      ip_netmask  => $this::netmask,
 		     ip_gateway  => $this::gateway );
 	
-	@Subnodes = $rootel->getChildrenByTagName("template");
-
- 	foreach $Subnode (@Subnodes){
-
-                if(($Subnode->nodeType==ELEMENT_NODE)&&($Subnode->getAttribute("type") eq "interfaces")){
-			@leafes = $Subnode->getElementsByTagName("*");
-			foreach $leaf (@leafes){
-				if($leaf->nodeType==ELEMENT_NODE){
-
-		                        switch ($leaf ->nodeName()){
-						case "name" {$name_interfaces = $leaf->textContent();}
-					       	case "dest" {$path_interfaces = $leaf->textContent();}
-					}
-				}
-			}
-		}elsif(($Subnode->nodeType==ELEMENT_NODE)&&($Subnode->getAttribute("type") eq "resolv.conf")){
-			 @leafes = $Subnode->getElementsByTagName("*");
-                        foreach $leaf (@leafes){
-                                if($leaf->nodeType==ELEMENT_NODE){
-
-                                        switch ($leaf ->nodeName()){
-                                                case "name" {$name_resolv = $leaf->textContent();}
-                                                case "dest" {$path_resolv = $leaf->textContent();}
-                                        }
-                                }
-                        }
-
-		}
-	}
-
 	getFileFromRepo($FTP_Dir_Tmpl.$name_interfaces.".tt",$name_interfaces.".tt");
 	getFileFromRepo($FTP_Dir_Tmpl.$name_resolv.".tt",$name_resolv.".tt");
 
@@ -439,7 +408,7 @@ sub aptInstall{
 
 sub getFileFromRepo(){
 
-	print "trying to get file: ".$repo_url.@_[0]." \n ...";
+	print "trying to get file: ".$repo_url.$_[0]." \n ...";
 	
 	#$status = getstore($repo_url.$_[0], $_[1],);
 	#if ( !is_success($status)) { cleanUpAndExit("ERROR: error downloading file '$_[0]' : Error Code: $status ... \n");
