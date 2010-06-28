@@ -2,6 +2,7 @@
 <!-- XML-File for role Server_PS_ec2 -->
 
 <serverconfig>
+ <report>alexander.mueller@pcvisit.de</report>
  <timezone>Europe/Berlin</timezone>
  <install>
         <name>Connectionserver_Install_Binary</name>

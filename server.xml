@@ -2,6 +2,7 @@
 <!-- XML-File for role Server_PS -->
 
 <serverconfig>
+ <report>alexander.mueller@pcvisit.de</report>
  <ipconfig>
         <ip>192.168.0.199</ip>
         <netmask>255.255.255.0</netmask>

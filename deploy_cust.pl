@@ -17,7 +17,8 @@ use Expect;
 
 my $t0 = [gettimeofday];
 my $xml_file        = "";
-my $monitorEmail    = 'alexander.mueller@pcvisit.de';
+my $monitorEmail    = '';
+my $report	    = 0;
 #my $repo_url        = "http://update.pcvisit.de/autoupdate/ec2/private/";
 #my $repo_url       = "ftp://192.168.0.199/private/";
 my $updateinfo_url  = "http://update.pcvisit.de/";
@@ -167,7 +168,12 @@ sub parseAndExecuteXML{
 
   		if($node->nodeType==ELEMENT_NODE){
 			switch ($node->nodeName()){
-			
+		
+				case "report" {
+	                                $monitorEmail = $node->textContent();
+                                        $report = 1;
+                                        print "INFO: set report rcpt to: ".$node->textContent()." ... \n";
+				}	
 				case "timezone" {
 					setTimezone($node->textContent());
 					print "INFO: timezone set to: ".$node->textContent()." ... \n";
@@ -465,23 +471,24 @@ sub cleanUpAndExit{
 
 	print $logString;
 
-	$message = MIME::Lite->new(
-        	To      => $monitorEmail,
-        	Subject => "Deployment run for role \"$role\" on ip ".$this->ip."",
-        	Data    => 'logfiles attached',
-		Type    =>'multipart/mixed'
-	);
+	if ($report){
+		$message = MIME::Lite->new(
+        		To      => $monitorEmail,
+        		Subject => "Deployment run for role \"$role\" on ip ".$this->ip."",
+        		Data    => 'logfiles attached',
+			Type    =>'multipart/mixed'
+		);
 
-	foreach $line (@Logfiles) {
-		$part = MIME::Lite->new(
-			Type => 'text/plain',
-			Path => $working_dir.$line,
-			Disposition => 'attachment'
-		)or die "Error adding the text message part: $!\n";
-		$message->attach($part);
+		foreach $line (@Logfiles) {
+			$part = MIME::Lite->new(
+				Type => 'text/plain',
+				Path => $working_dir.$line,
+				Disposition => 'attachment'
+			)or die "Error adding the text message part: $!\n";
+			$message->attach($part);
+		}
+		$message->send;
 	}
-	$message->send;
-
 	exit 0;
 }
 
