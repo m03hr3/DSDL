@@ -72,7 +72,7 @@ sub init{
 	
 	chdir $working_dir or die "ERROR: could not change to $working_dir ... \n";
 
-	$xmlschema = XML::LibXML::Schema->new( location => "dsdl1.xsd" ) or cleanUpAndExit("ABORT: XSD not found ...\n");
+	$xmlschema = XML::LibXML::Schema->new( location => "dsdl.xsd" ) or cleanUpAndExit("ABORT: XSD not found ...\n");
 
 	# open the logfile
 	open FILE, "+>", $logfile or die "ERROR: Could not create Logfile: $! \n";
