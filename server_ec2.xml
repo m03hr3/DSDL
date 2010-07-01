@@ -6,8 +6,8 @@
  <timezone>Europe/Berlin</timezone>
  <install>
         <name>Connectionserver_Install_Binary</name>
-	<branch>trunk</branch>
-        <revision>8.3.4.2563</revision>
+	<branch>STABLE</branch>
+        <revision>914</revision>
 	<os>linux</os>
 	<config>release</config>
 	<customization>standard</customization>
