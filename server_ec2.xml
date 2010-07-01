@@ -30,10 +30,7 @@
  </sysvinit>
  <aptitude>libexpect-perl_1</aptitude>
  <aptitude>acm</aptitude>
- <copy>
-	<sourcefile>templates/start.tt</sourcefile>
-	<destfile>/usr/local/pcvisit/start</destfile>
- </copy>
+ <command> sed -e 's/file/remote/' /usr/local/pcvisit/pcv/start</command>
  <command>/usr/local/pcvisit/pcvisit_init start</command>
 </serverconfig>
 
