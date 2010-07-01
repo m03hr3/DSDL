@@ -404,7 +404,7 @@ sub aptInstall{
 	}
 }
 
-sub getFileFromRepo(){
+sub getFileFromRepo{
 
 	#print "trying to get file: ".$repo_url.@_[0]." \n ...";
 	
@@ -495,7 +495,7 @@ sub copyFile {
 
 	foreach $item (@subnodes){
 		
-		if($item->nodeType=ELEMENT_NODE){
+		if($item->nodeType==ELEMENT_NODE){
 			
 			switch ($item->nodeName()){
 				case "sourcefile" { $src  = $item->textContent();}
