@@ -1,63 +1,63 @@
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-<!-- XML Schema für Dynamic Server Deployment Language - DSDL -->
-
-<xsd:element name="serverconfig" type="serverconfigType"/>
-<xsd:element name="ipconfig"     type="ipconfigType"/>
-<xsd:element name="install"      type="installType"/>
-<xsd:element name="sysvinit"     type="sysvinitType"/>
-<xsd:element name="template"     type="templateType"/>
-
-<xsd:complexType name="ipconfigType">
- <xsd:all>
-  <xsd:element name="ip"         type="xsd:string"/>
-  <xsd:element name="netmask"    type="xsd:string"/>
-  <xsd:element name="network"    type="xsd:string"/>
-  <xsd:element name="gateway"    type="xsd:string"/>
-  <xsd:element name="nameserver" type="xsd:string"/>
- </xsd:all>
-</xsd:complexType>
-
-<xsd:complexType name="sysvinitType">
- <xsd:all>
-  <xsd:element name="sourcefile" type="xsd:string"/>
-  <xsd:element name="sysvname"   type="xsd:string"/>
-  <xsd:element name="position"   type="xsd:integer"/>
- </xsd:all>
-</xsd:complexType>
-
-<xsd:complexType name="expat_stepsType">
- <xsd:all>
-  <xsd:element name="step" type="stepType" maxOccurs="unbounded"/>
- </xsd:all>
-</xsd:complexType>
-
-<xsd:complexType name="stepType">
- <xsd:sequence>
-  <xsd:element name="question" type="xsd:string"/>
-  <xsd:element name="answer"   type="xsd:string"/>
- </xsd:sequence>
-</xsd:complexType>
-
-<xsd:complexType name="installType">
- <xsd:sequence>
-  <xsd:element name="artefactname"  type="xsd:string"/>
-  <xsd:element name="branch"        type="xsd:string"/>
-  <xsd:element name="revision"      type="xsd:string"/>
-  <xsd:element name="os"            type="xsd:string"/>
-  <xsd:element name="config"        type="xsd:string"/>
-  <xsd:element name="customization" type="xsd:string"/>
-  <xsd:element name="expat_steps"   type="expat_stepsType"/>
- </xsd:sequence>
-</xsd:complexType>
-
-<xsd:complexType name="serverconfigType">
- <xsd:all>
-  <xsd:element name="report"   type="xsd:string"/>
-  <xsd:element name="ipconfig" type="ipconfigType"/>
-  <xsd:element name="timezone" type="xsd:string"/>
-  <xsd:element name="install"  type="installType"/>
-  <xsd:element name="aptitude" type="xsd:string"/>
-  <xsd:element name="sysvinit" type="sysvinitType"/>
-  <xsd:element name="command"  type="xsd:string"/>
- </xsd:all>
-</xsd:complexType>
+ <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ <!-- XML Schema für Dynamic Server Deployment Language - DSDL -->
+ 
+ <xsd:element name="serverconfig" type="serverconfigType"/>
+ <xsd:element name="ipconfig"     type="ipconfigType"/>
+ <xsd:element name="install"      type="installType"/>
+ <xsd:element name="sysvinit"     type="sysvinitType"/>
+ 
+ <xsd:complexType name="ipconfigType">
+  <xsd:all>
+   <xsd:element name="ip"         type="xsd:string"/>
+   <xsd:element name="netmask"    type="xsd:string"/>
+   <xsd:element name="network"    type="xsd:string"/>
+   <xsd:element name="gateway"    type="xsd:string"/>
+   <xsd:element name="nameserver" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+ 
+ <xsd:complexType name="sysvinitType">
+  <xsd:all>
+   <xsd:element name="sourcefile" type="xsd:string"/>
+   <xsd:element name="sysvname"   type="xsd:string"/>
+   <xsd:element name="position"   type="xsd:integer"/>
+  </xsd:all>
+ </xsd:complexType>
+ 
+ <xsd:complexType name="expat_stepsType">
+  <xsd:sequence>
+   <xsd:element name="step" type="stepType" maxOccurs="unbounded"/>
+  </xsd:sequence>
+ </xsd:complexType>
+ 
+ <xsd:complexType name="stepType">
+  <xsd:sequence>
+   <xsd:element name="question" type="xsd:string"/>
+   <xsd:element name="answer"   type="xsd:string"/>
+  </xsd:sequence>
+ </xsd:complexType>
+ 
+ <xsd:complexType name="installType">
+  <xsd:sequence>
+   <xsd:element name="artefactname"  type="xsd:string"/>
+   <xsd:element name="branch"        type="xsd:string"/>
+   <xsd:element name="revision"      type="xsd:string"/>
+   <xsd:element name="os"            type="xsd:string"/>
+   <xsd:element name="config"        type="xsd:string"/>
+   <xsd:element name="customization" type="xsd:string"/>
+   <xsd:element name="expat_steps"   type="expat_stepsType"/>
+  </xsd:sequence>
+ </xsd:complexType>
+ 
+ <xsd:complexType name="serverconfigType">
+  <xsd:all>
+   <xsd:element name="report"   type="xsd:string"/>
+   <xsd:element name="ipconfig" type="ipconfigType"/>
+   <xsd:element name="timezone" type="xsd:string"/>
+   <xsd:element name="install"  type="installType"/>
+   <xsd:element name="aptitude" type="xsd:string"/>
+   <xsd:element name="sysvinit" type="sysvinitType"/>
+   <xsd:element name="command"  type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+</xsd:schema>

@@ -36,6 +36,7 @@ my $name_interfaces = "interfaces";
 my $path_interfaces = "/etc/network/";
 my $name_resolv     = "resolv.conf";
 my $path_resolv     = "/etc/";
+my $xmlschema	    = "";
 my @DLfiles         = "";
 my @Logfiles        = ();
 my $browser = LWP::UserAgent->new;
@@ -70,6 +71,8 @@ sub init{
 	@DLfiles  = $xml_file;
 	
 	chdir $working_dir or die "ERROR: could not change to $working_dir ... \n";
+
+	$xmlschema = XML::LibXML::Schema->new( location => "dsdl1.xsd" ) or cleanUpAndExit("ABORT: XSD not found ...\n");
 
 	# open the logfile
 	open FILE, "+>", $logfile or die "ERROR: Could not create Logfile: $! \n";
