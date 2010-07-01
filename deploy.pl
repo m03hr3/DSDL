@@ -168,6 +168,11 @@ sub parseAndExecuteXML{
 				case "aptitude" {
 					aptInstall($node->textContent());
 				}
+
+				case "copy" {
+                                        copyFile($node);
+                                }
+
 				case "command" {
 					sysExec($node->textContent());
 				}
@@ -477,6 +482,30 @@ sub cleanUpAndExit{
 		$message->send;
 	}
 	exit 0;
+}
+
+sub copyFile {
+
+	my $src	     = "";
+	my $dest     = "";
+	my $subnode  = "";
+	my @subnodes = ();
+
+	@subnodes = $_[0]->getChildNodes();
+
+	foreach $item (@subnodes){
+		
+		if($item->nodeType=ELEMENT_NODE){
+			
+			switch ($item->nodeName()){
+				case "sourcefile" { $src  = $item->textContent();}
+				case "destfile"	  { $dest = $item->textContent();} 
+			}
+		}
+	}
+
+	getFileFromRepo($src,$dest);
+	print "INFO: copied $src from repository to $dest ... \n";
 }
 
 init();
