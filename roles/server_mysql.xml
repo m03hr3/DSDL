@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<!-- XML-File for role server_mysql -->
+
+<serverconfig>
+<timezone>Europe/Berlin</timezone>
+  <aptitude>mysql</aptitude>
+</serverconfig>
+
