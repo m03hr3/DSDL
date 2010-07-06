@@ -37,7 +37,8 @@ my $path_interfaces = "/etc/network/";
 my $name_resolv     = "resolv.conf";
 my $path_resolv     = "/etc/";
 my $xmlschema	    = "";
-my @DLfiles         = "";
+my $xsd_file	    = "dsdl.xsd";
+my @DLfiles         = ();
 my @Logfiles        = ();
 my $browser = LWP::UserAgent->new;
 
@@ -70,7 +71,8 @@ sub init{
 
 	$role     = $ARGV[0];
 	$xml_file = $role.".xml";
-	@DLfiles  = $xml_file;
+	push(@DLfiles,$xml_file);
+	push(@DLfiles,$xsd_file);
 	
 	chdir $working_dir or die "ERROR: could not change to $working_dir ... \n";
 
@@ -78,19 +80,6 @@ sub init{
 	open FILE, "+>", $logfile or die "ERROR: Could not create Logfile: $! \n";
 	close FILE;
 	open (STDOUT, ">>$logfile");
-
-	$parser = new XML::LibXML;
-
-        if (! -e $xml_file){
-                cleanUpAndExit("ERROR: Could not find XML Config $xml_file ... \n");
-        }
-        $struct = $parser -> parse_file($xml_file);
-
-        $xmlschema = XML::LibXML::Schema->new( location => "dsdl.xsd" ) or cleanUpAndExit("ABORT: XSD not found ...\n");
-        eval { $xmlschema->validate( $struct ); };
-
-	if($@) { cleanUpAndExit("ABORT: $xml_file seems not to be valid DSDL! \n\n $@ \n") }
-	else{ print "INFO: $xml_file seems to be valid DSDL document! Starting deployment ...\n";}
 
 	chmod 0644,$logfile;
 	push(@Logfiles,$logfile);
@@ -147,6 +136,19 @@ sub init{
 	foreach $file (@DLfiles){
 		getFileFromRepo($FTP_Dir_Roles.$file,$file);
 	}
+
+	$parser = new XML::LibXML;
+
+        if (! -e $xml_file){
+                cleanUpAndExit("ERROR: Could not find XML Config $xml_file ... \n");
+        }
+        $struct = $parser -> parse_file($xml_file);
+
+        $xmlschema = XML::LibXML::Schema->new( location => $xsd_file ) or cleanUpAndExit("ABORT: XSD not found ...\n");
+        eval { $xmlschema->validate( $struct ); };
+
+        if($@) { cleanUpAndExit("ABORT: $xml_file seems not to be valid DSDL! \n\n $@ \n") }
+        else{ print "INFO: $xml_file seems to be valid DSDL document! Starting deployment ...\n";}
 
 }
 

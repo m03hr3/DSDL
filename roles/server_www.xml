@@ -3,6 +3,6 @@
 
 <serverconfig>
  <timezone>Europe/Berlin</timezone>
- <aptitude>mysql-server</aptitude>
+ <aptitude>apache2</aptitude>
 </serverconfig>
 
