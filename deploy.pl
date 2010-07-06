@@ -3,7 +3,7 @@
 #use strict;
 use Time::HiRes qw(gettimeofday tv_interval);
 use Class::Struct;
-use MIME::Lite;
+#use MIME::Lite;
 use XML::LibXML;
 use XML::XPath;
 use XML::LibXML::Common;
