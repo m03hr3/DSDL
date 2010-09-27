@@ -128,7 +128,7 @@ sub init{
 	
 	$browser->credentials(
   		'80.237.225.181:80',
-  		'Versuch',
+  		'Repository',
   		$http_user => $http_pass
 	);
 
