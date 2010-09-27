@@ -422,12 +422,6 @@ sub aptInstall{
 
 sub getFileFromRepo{
 
-	#print "trying to get file: ".$repo_url.@_[0]." \n ...";
-	
-	#$status = getstore($repo_url.$_[0], $_[1],);
-	#if ( !is_success($status)) { cleanUpAndExit("ERROR: error downloading file '$_[0]' : Error Code: $status ... \n");
-	#}
-
 	$response = $browser->mirror($repo_url.$_[0],$_[1]);
 
 	if( $response->is_error( ) ){
