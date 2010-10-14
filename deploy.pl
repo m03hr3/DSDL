@@ -3,13 +3,11 @@
 #use strict;
 use Time::HiRes qw(gettimeofday tv_interval);
 use Class::Struct;
-#use MIME::Lite;
 use XML::LibXML;
 use XML::XPath;
 use XML::LibXML::Common;
 use XML::NamespaceSupport;
 use Template;
-use LWP::Simple;
 use LWP::UserAgent;
 use Switch;
 use Expect;
@@ -366,7 +364,7 @@ sub getIp {
 	my $ip = "0.0.0.0"; # Default-IP
 	my $interface = shift || "lo"; # Default-Interface
 
-	return $ip if $>; # nur r00t geht weiter
+	return $ip if $>; # ensure we run as root
 
 	@ifconfig = qx(ifconfig);
 
